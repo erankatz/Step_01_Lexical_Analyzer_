@@ -89,7 +89,7 @@
     <ClCompile Include="yylex.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\BISON_OUTPUT_FILES\tiger.tab.h" />
+    <ClInclude Include="..\..\BISON\BISON_01_For_First_Exercise\tiger.tab.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="errormsg.h" />
     <ClInclude Include="flexdef.h" />

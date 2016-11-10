@@ -74,7 +74,7 @@
     <ClInclude Include="version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\BISON_OUTPUT_FILES\tiger.tab.h">
+    <ClInclude Include="..\..\BISON\BISON_01_For_First_Exercise\tiger.tab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
