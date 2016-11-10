@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LexicalAnalyzer", "LexicalAnalyzer.vcxproj", "{18564299-0EE5-4C87-8DB9-82132D16E6CF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Flex", "..\Flex\Flex.vcxproj", "{44451804-AA0A-48C2-9891-B774595C0744}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{18564299-0EE5-4C87-8DB9-82132D16E6CF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{18564299-0EE5-4C87-8DB9-82132D16E6CF}.Debug|Win32.Build.0 = Debug|Win32
+		{18564299-0EE5-4C87-8DB9-82132D16E6CF}.Release|Win32.ActiveCfg = Release|Win32
+		{18564299-0EE5-4C87-8DB9-82132D16E6CF}.Release|Win32.Build.0 = Release|Win32
+		{44451804-AA0A-48C2-9891-B774595C0744}.Debug|Win32.ActiveCfg = Debug|Win32
+		{44451804-AA0A-48C2-9891-B774595C0744}.Debug|Win32.Build.0 = Debug|Win32
+		{44451804-AA0A-48C2-9891-B774595C0744}.Release|Win32.ActiveCfg = Release|Win32
+		{44451804-AA0A-48C2-9891-B774595C0744}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
