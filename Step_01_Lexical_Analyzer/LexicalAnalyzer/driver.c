@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 	SaveMatrixToFile(mat, M, N, MATRIXFILE);
 	FreeMatrix(mat,M);
 	fname = MATRIXFILE ;
-	EM_reset(fname) ;
+	EM_reset(fname);
 
 	printf("\n\n") ;
 	
@@ -116,6 +116,7 @@ int main(int argc, char **argv)
 	i = 0;
 	j = 0;
 	openBar = 0;
+	//Read Matrix From file
 	for (;;)
 	{
 		tok = yylex();
@@ -174,6 +175,7 @@ int main(int argc, char **argv)
 	
 	EM_reset(fname);
 
+	//Read Operation File
 	for (;;)
 	{
 		tok = yylex();
@@ -206,6 +208,8 @@ int main(int argc, char **argv)
 			break;
 		case FRACTION:
 			multiplier = FractionToFloat(yylval.sval);
+			break;
+		case REPLACEARROW:
 			break;
 		default:
 			printf("%s ", tokname(tok));

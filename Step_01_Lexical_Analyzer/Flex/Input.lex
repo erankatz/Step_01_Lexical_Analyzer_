@@ -42,6 +42,7 @@ while																{adjust(); return WHILE;}
 "="																	{adjust(); return EQ;}
 ":="																{adjust(); return ASSIGN;}
 -+>																	{adjust(); return ARROW;}
+[<]-{3,}>																{adjust(); return REPLACEARROW;}
 R[0-9]+																{adjust(); yylval.sval=String(yytext + 1); yylval.ival=atoi(yylval.sval); return ROWID;}
 -{0,1}[0-9]+\/[0-9]+												{adjust(); yylval.sval=String(yytext); return FRACTION;}
 -{0,1}[0-9]+[0-9]*													{adjust(); yylval.ival=atoi(yytext); return INT;}

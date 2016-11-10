@@ -52,5 +52,6 @@ typedef union {
 #define NEWLINE 303
 #define ROWID 304
 #define FRACTION 305
+#define REPLACEARROW 306
 
 extern YYSTYPE yylval;
