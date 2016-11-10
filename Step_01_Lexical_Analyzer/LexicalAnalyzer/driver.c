@@ -20,6 +20,20 @@ YYSTYPE yylval;
 
 int yylex(void); /* prototype for the lexing function */
 
+void replace_rows(float **mat,int left)
+{
+	int tok = yylex();
+	if (tok == ROWID && yylval.ival <= N)
+	{
+		float *temp = mat[yylval.ival];
+		mat[yylval.ival] = mat[left];
+		mat[left] = temp;
+	}
+	else 
+	{
+		printf("Syntax Error");
+	}
+}
 string tokname(int tok)
 {
 	switch (tok) {
@@ -130,6 +144,7 @@ int main(int argc, char **argv)
 			}
 			else {
 				printf("Syntax Error");
+				exit(1);
 			}
 			break;
 		case FLOAT:
@@ -140,12 +155,14 @@ int main(int argc, char **argv)
 			}
 			else {
 				printf("Syntax Error");
+				exit(1);
 			}
 			break;
 		case LBRACK:
 			if (openBar == TRUE)
 			{
 				printf("Syntax Error");
+				exit(1);
 			}
 			openBar = TRUE;
 			break;
@@ -155,6 +172,7 @@ int main(int argc, char **argv)
 				break;
 			else {
 				printf("Syntax Error");
+				exit(1);
 			}
 		case SEMICOLON:
 			if (i < N)
@@ -165,6 +183,7 @@ int main(int argc, char **argv)
 			break;
 		default:
 			printf("Syntax Error");
+			exit(1);
 		}
 
 	}
@@ -186,14 +205,22 @@ int main(int argc, char **argv)
 			mat2 = CreateElementaryMatrix(M, N);
 			break;
 		case ROWID:
-			if (right)
+			if (yylval.ival <= N)
 			{
-				mat2[left_row-1][yylval.ival-1] = multiplier;
+				if (right)
+				{
+					mat2[left_row-1][yylval.ival-1] = multiplier;
+				}
+				else {
+					left_row = yylval.ival;
+				}
+				multiplier = 1;
 			}
-			else {
-				left_row = yylval.ival;
+			else
+			{
+				printf("Only opration on 3 by 3 matrix allowed");
+				exit(1);
 			}
-			multiplier = 1;
 			break;
 		case NEWLINE:
 			right = 0;
@@ -210,6 +237,7 @@ int main(int argc, char **argv)
 			multiplier = FractionToFloat(yylval.sval);
 			break;
 		case REPLACEARROW:
+			replace_rows(mat,left_row);
 			break;
 		default:
 			printf("%s ", tokname(tok));
