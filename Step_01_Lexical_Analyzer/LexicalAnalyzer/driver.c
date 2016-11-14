@@ -23,11 +23,11 @@ int yylex(void); /* prototype for the lexing function */
 void replace_rows(float **mat,int left)
 {
 	int tok = yylex();
-	if (tok == ROWID && yylval.ival <= N)
+	if (tok == ROWID && yylval.ival <= N && yylval.ival > 0)
 	{
-		float *temp = mat[yylval.ival];
-		mat[yylval.ival] = mat[left];
-		mat[left] = temp;
+		float *temp = mat[yylval.ival - 1];
+		mat[yylval.ival - 1] = mat[left - 1];
+		mat[left - 1] = temp;
 	}
 	else 
 	{
@@ -201,10 +201,12 @@ int main(int argc, char **argv)
 		if (tok == 0) break;
 		switch (tok) {
 		case ARROW:
+			printf("arrow");
 			right = 1;
 			mat2 = CreateElementaryMatrix(M, N);
 			break;
 		case ROWID:
+			printf("rowid");
 			if (yylval.ival <= N)
 			{
 				if (right)
@@ -223,6 +225,7 @@ int main(int argc, char **argv)
 			}
 			break;
 		case NEWLINE:
+			printf("newline");
 			right = 0;
 			multiplier = 1;
 			mat3 = MatrixMultiplication(mat2, mat, M, N);
@@ -231,12 +234,15 @@ int main(int argc, char **argv)
 			mat = mat3;
 			break;
 		case INT:
+			printf("int");
 			multiplier = yylval.ival;
 			break;
 		case FRACTION:
+			printf("fraction");
 			multiplier = FractionToFloat(yylval.sval);
 			break;
 		case REPLACEARROW:
+			printf("replacearrow");
 			replace_rows(mat,left_row);
 			break;
 		default:
