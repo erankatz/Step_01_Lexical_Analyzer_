@@ -193,7 +193,7 @@ int main(int argc, char **argv)
 	multiplier = 1;
 	
 	EM_reset(fname);
-
+	mat2 = NULL;
 	//Read Operation File
 	for (;;)
 	{
@@ -226,12 +226,16 @@ int main(int argc, char **argv)
 			break;
 		case NEWLINE:
 			printf("newline");
+			if (mat2 != NULL)
+			{
+				mat3 = MatrixMultiplication(mat2, mat);
+				FreeMatrix(mat2, M);
+				FreeMatrix(mat, M);
+				mat = mat3;
+			}
 			right = 0;
 			multiplier = 1;
-			mat3 = MatrixMultiplication(mat2, mat, M, N);
-			FreeMatrix(mat2,M);
-			FreeMatrix(mat,M);
-			mat = mat3;
+			mat2 = NULL;
 			break;
 		case INT:
 			printf("int");

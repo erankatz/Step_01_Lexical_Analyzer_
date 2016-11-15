@@ -9,11 +9,11 @@
 #define OPERATIONFILE "RowOperations.txt"
 
 
-float random();
+float myrandom();
 
 int** RandomizeMatrix(int m, int n);
 
-int** CreateMatrix(int m, int n);
+float** CreateMatrix(int m, int n);
 
 void SaveMatrixToFile(float** mat, int m, int n, const char* filename);
 
@@ -21,5 +21,5 @@ void SaveMatrixToFile(float** mat, int m, int n, const char* filename);
 void FreeMatrix(float** mat, int m);
 float** CreateElementaryMatrix(int m, int n);
 
-float** MatrixMultiplication(float** mat1, float** mat2, int m, int n);
+float** MatrixMultiplication(float** mat1, float** mat2);
 #endif

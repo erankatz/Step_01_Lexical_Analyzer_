@@ -6,7 +6,7 @@
 
 #include "LinearAlgebra1Master.h"
 
-float random()
+float myrandom()
 {
 	_sleep(557);
 	srand(time(NULL));
@@ -23,7 +23,7 @@ float** RandomizeMatrix(int m, int n)
 	{
 		for (j = 0; j<n; j++)
 		{
-			x[i][j] = random();
+			x[i][j] = myrandom();
 		}
 	}
 
@@ -37,8 +37,8 @@ float** CreateMatrix(int m, int n)
 
 	x = (float **)malloc(m * sizeof(float));
 	for (i = 0; i<m; i++)
-		x[i] = (int *)malloc(n * sizeof(float));
-	y = (float *)malloc(n * sizeof(float));
+		x[i] = (float *)malloc(n * sizeof(float));
+
 	return x;
 }
 
@@ -98,17 +98,18 @@ float** CreateElementaryMatrix(int m, int n)
 	return mat;
 }
 
-float** MatrixMultiplication(float** mat1, float** mat2, int m, int n)
-{
-	int i, j, k;
+float** MatrixMultiplication(float** mat1, float** mat2)
+{	int i, j, k;
 	float sum;
 	float** mat3;
+	
 
-	mat3 = CreateMatrix(M, N);
-	for (i = 0; i < m; i++) {
-		for (j = 0; j < n; j++) {
+	
+	mat3 = CreateMatrix(3, 3);
+	for (i = 0; i < 3; i++) {
+		for (j = 0; j < 3; j++) {
 			sum = 0;
-			for (k = 0; k < m; k++) {
+			for (k = 0; k < 3; k++) {
 				sum = sum + mat1[i][k] * mat2[k][j];
 			}
 			mat3[i][j] = sum;
