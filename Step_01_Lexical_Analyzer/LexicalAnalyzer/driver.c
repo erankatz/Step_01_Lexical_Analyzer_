@@ -200,12 +200,12 @@ float** readOperationFile(char *fname, float **mat)
 		}
 		switch (tok) {
 		case ARROW:
-			printf("arrow");
+			//printf("arrow");
 			right = 1;
 			mat2 = CreateElementaryMatrix(M, N);
 			break;
 		case ROWID:
-			printf("rowid");
+			//printf("rowid");
 			if (yylval.ival <= N)
 			{
 				if (right)
@@ -229,7 +229,7 @@ float** readOperationFile(char *fname, float **mat)
 			}
 			break;
 		case NEWLINE:
-			printf("newline");
+			//printf("\n");
 			if (mat2 != NULL)
 			{
 				mat3 = MatrixMultiplication(mat2, mat);
@@ -248,15 +248,15 @@ float** readOperationFile(char *fname, float **mat)
 			row_in_left_apears_on_right = FALSE;
 			break;
 		case INT:
-			printf("int");
+			//printf("int");
 			multiplier = yylval.ival;
 			break;
 		case FRACTION:
-			printf("fraction");
+			//printf("fraction");
 			multiplier = FractionToFloat(yylval.sval);
 			break;
 		case REPLACEARROW:
-			printf("replacearrow");
+			//printf("replacearrow");
 			replace_rows(mat, left_row);
 			tok = yylex();
 			if (tok != NEWLINE)
@@ -266,7 +266,7 @@ float** readOperationFile(char *fname, float **mat)
 			}
 			break;
 		default:
-			printf("%s ", tokname(tok));
+			//printf("%s ", tokname(tok));
 			break;
 		}
 	}
@@ -286,16 +286,23 @@ int main(int argc, char **argv)
 	float multiplier;
 	bool row_in_left_apears_on_right = FALSE;
 
-	if (argc != 2)
+	if (argc == 3)
 	{
+		fname = argv[1];
+	}
+	else if (argc == 2)
+	{
+
+		mat = RandomizeMatrix(M, N);
+		SaveMatrixToFile(mat, M, N, MATRIXFILE);
+		FreeMatrix(mat, M);
+		fname = MATRIXFILE;
+	} else {
+
 		fprintf(stderr,"usage: a.out filename\n");
 		return 0;
 	}
-	
-	mat = RandomizeMatrix(M, N);
-	SaveMatrixToFile(mat, M, N, MATRIXFILE);
-	FreeMatrix(mat,M);
-	fname = MATRIXFILE ;
+
 	EM_reset(fname);
 	
 	printf("\n\n") ;
@@ -303,40 +310,19 @@ int main(int argc, char **argv)
 	mat = CreateMatrix(M, N);
 
 	readMatrix(mat);
-
-	fname = OPERATIONFILE;
+	if (argc == 2)
+	{
+		fname = argv[1];
+	}
+	else {
+		fname = argv[2];
+	}
+	
 	mat = readOperationFile(fname,mat);
 
 	SaveMatrixToFile(mat, M, N, "out.txt");
-	fname=argv[0];
-	EM_reset(fname);
-
-	for(;;)
-	{
-		tok=yylex();
-		if (tok==0) break;
-		switch(tok) {
-		case ID:
-			printf("%s(%s) ",tokname(tok),yylval.sval);
-			break;
-		case STRING:
-			printf("%s(%s) ",tokname(tok),yylval.sval);
-			break;
-		case INT:
-			printf("%s(%d) ",tokname(tok),yylval.ival);
-			break;
-		case FLOAT:
-			printf("%s(%f) ",tokname(tok),yylval.fval);
-			break;
-		case SEMICOLON:
-			printf("%s\n\n",tokname(tok));
-			break;
-		default:
-			printf("%s ",tokname(tok));
-			break;
-		}
-	}
-
+	PrintMatrix(mat,M,N);
+	
 	printf("\n");
 	
 	return 0;

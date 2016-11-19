@@ -64,6 +64,27 @@ void SaveMatrixToFile(float** mat, int m, int n, const char* filename)
 	fclose(file);
 }
 
+
+void PrintMatrix(float** mat, int m, int n)
+{
+	int i, j;
+	printf("[");
+
+	for (i = 0; i<m; i++)
+	{
+		for (j = 0; j<n; j++)
+		{
+			printf(" %.2f", mat[i][j]);
+		}
+		if (i < m - 1)
+		{
+			printf(" ;");
+		}
+	}
+	printf("]");
+}
+
+
 void FreeMatrix(float** mat, int m)
 {
 	int i;
