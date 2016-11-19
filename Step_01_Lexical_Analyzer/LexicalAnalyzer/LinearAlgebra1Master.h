@@ -11,7 +11,7 @@
 
 float myrandom();
 
-int** RandomizeMatrix(int m, int n);
+float** RandomizeMatrix(int m, int n);
 
 float** CreateMatrix(int m, int n);
 

@@ -87,7 +87,7 @@ string tokname(int tok)
 
 float FractionToFloat(char *str)
 {
-	char *text = strdup(str);
+	/*char *text = strdup(str);
 	int num1;
 	int num2;
 	float ret;
@@ -95,7 +95,8 @@ float FractionToFloat(char *str)
 	num1 = atoi(strtok(text, "/"));
 	num2 = atoi(strtok(NULL, "/"));
 	ret =  (float)num1 / (float)num2;
-	return ret;
+	return ret;*/
+	return 5;
 }
 
 void readMatrix(float **mat)
@@ -252,7 +253,7 @@ float** readOperationFile(char *fname, float **mat)
 			multiplier = yylval.ival;
 			break;
 		case FRACTION:
-			//printf("fraction");
+			//printf(*yylval.sval);
 			multiplier = FractionToFloat(yylval.sval);
 			break;
 		case REPLACEARROW:
@@ -285,7 +286,7 @@ int main(int argc, char **argv)
 	int right;
 	float multiplier;
 	bool row_in_left_apears_on_right = FALSE;
-
+		
 	if (argc == 3)
 	{
 		fname = argv[1];
@@ -302,13 +303,13 @@ int main(int argc, char **argv)
 		fprintf(stderr,"usage: a.out filename\n");
 		return 0;
 	}
-
+	
 	EM_reset(fname);
 	
 	printf("\n\n") ;
 	
 	mat = CreateMatrix(M, N);
-
+	
 	readMatrix(mat);
 	if (argc == 2)
 	{
@@ -317,13 +318,11 @@ int main(int argc, char **argv)
 	else {
 		fname = argv[2];
 	}
-	
-	mat = readOperationFile(fname,mat);
 
+	mat = readOperationFile(fname,mat);
+	
 	SaveMatrixToFile(mat, M, N, "out.txt");
 	PrintMatrix(mat,M,N);
-	
-	printf("\n");
 	
 	return 0;
 }
