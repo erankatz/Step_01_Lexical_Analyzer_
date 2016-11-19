@@ -252,7 +252,6 @@ float** readOperationFile(char *fname, float **mat)
 			multiplier = yylval.ival;
 			break;
 		case FRACTION:
-			printf("1");
 			multiplier = yylval.fval;
 			break;
 		case REPLACEARROW:
@@ -304,8 +303,6 @@ int main(int argc, char **argv)
 	}
 	
 	EM_reset(fname);
-	
-	printf("\n\n") ;
 	
 	mat = CreateMatrix(M, N);
 	
