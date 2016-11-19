@@ -164,14 +164,14 @@ void readMatrix(float **mat)
 	}
 }
 
-float** readOperationFile(char *fname,float **mat)
+float** readOperationFile(char *fname, float **mat)
 {
 	int tok, left_row;
 	int openBar;
-	int i=0;
-	int j=0;
+	int i = 0;
+	int j = 0;
 	float **mat2, **mat3;
-	int right=0;
+	int right = 0;
 	float multiplier = 1;
 	bool row_in_left_apears_on_right = FALSE;
 
@@ -182,7 +182,22 @@ float** readOperationFile(char *fname,float **mat)
 	for (;;)
 	{
 		tok = yylex();
-		if (tok == 0) break;
+		if (tok == 0)
+		{
+			if (mat2 != NULL)
+			{
+				mat3 = MatrixMultiplication(mat2, mat);
+				FreeMatrix(mat2, M);
+				FreeMatrix(mat, M);
+				mat = mat3;
+				if (!row_in_left_apears_on_right)
+				{
+					printf("The row in the left size must apear on the right side");
+					exit(1);
+				}
+			}
+			break;
+		}
 		switch (tok) {
 		case ARROW:
 			printf("arrow");
