@@ -87,7 +87,7 @@ string tokname(int tok)
 
 float FractionToFloat(char *str)
 {
-	/*char *text = strdup(str);
+	char *text = strdup(str);
 	int num1;
 	int num2;
 	float ret;
@@ -95,8 +95,7 @@ float FractionToFloat(char *str)
 	num1 = atoi(strtok(text, "/"));
 	num2 = atoi(strtok(NULL, "/"));
 	ret =  (float)num1 / (float)num2;
-	return ret;*/
-	return 5;
+	return ret;
 }
 
 void readMatrix(float **mat)
@@ -253,8 +252,8 @@ float** readOperationFile(char *fname, float **mat)
 			multiplier = yylval.ival;
 			break;
 		case FRACTION:
-			//printf(*yylval.sval);
-			multiplier = FractionToFloat(yylval.sval);
+			printf("1");
+			multiplier = yylval.fval;
 			break;
 		case REPLACEARROW:
 			//printf("replacearrow");
