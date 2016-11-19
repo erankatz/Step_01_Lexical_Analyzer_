@@ -1,2 +1,2 @@
 ﻿ccl.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
-  Flex.vcxproj -> D:\GitHub\Step_01_Lexical_Analyzer_\Step_01_Lexical_Analyzer\LexicalAnalyzer\Debug\Flex.exe
+  Flex.vcxproj -> D:\GitHub\Step_01_Lexical_Analyzer_\Step_01_Lexical_Analyzer\Flex\Debug\Flex.exe

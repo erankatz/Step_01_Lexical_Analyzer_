@@ -1,14 +1,19 @@
-
 #include<stdio.h>
-#include<conio.h>
+
 #include<stdlib.h>
 #include<time.h>
+#ifdef __unix__
+# include <unistd.h>
+#elif defined _WIN32
+# include <windows.h>
+#define sleep(x) Sleep(1000 * x)
+#endif
 
 #include "LinearAlgebra1Master.h"
 
 float myrandom()
 {
-	_sleep(557);
+	sleep(557 / 1000);
 	srand(time(NULL));
 	return  (float)5 - rand() % 11;
 }
@@ -34,11 +39,11 @@ float** CreateMatrix(int m, int n)
 {
 	int i;
 	float **x, *y;
-
+	
 	x = (float **)malloc(m * sizeof(float));
 	for (i = 0; i<m; i++)
 		x[i] = (float *)malloc(n * sizeof(float));
-
+	
 	return x;
 }
 
@@ -60,9 +65,30 @@ void SaveMatrixToFile(float** mat, int m, int n, const char* filename)
 		}
 	}
 	fprintf(file, "]");
-	flushall();
+	fflush(NULL);
 	fclose(file);
 }
+
+
+void PrintMatrix(float** mat, int m, int n)
+{
+	int i, j;
+	printf("[");
+
+	for (i = 0; i<m; i++)
+	{
+		for (j = 0; j<n; j++)
+		{
+			printf(" %.2f", mat[i][j]);
+		}
+		if (i < m - 1)
+		{
+			printf(" ;");
+		}
+	}
+	printf("]");
+}
+
 
 void FreeMatrix(float** mat, int m)
 {

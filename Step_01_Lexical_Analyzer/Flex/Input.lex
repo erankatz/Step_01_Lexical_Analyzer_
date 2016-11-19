@@ -40,8 +40,8 @@ while																{adjust(); return WHILE;}
 "/"																	{adjust(); return DIVIDE;}
 "="																	{adjust(); return EQ;}
 ":="																{adjust(); return ASSIGN;}
+\<-{1,12}>															{adjust(); return REPLACEARROW;}
 -+>																	{adjust(); return ARROW;}
-"<->"																{adjust(); return REPLACEARROW;}
 R[0-9]+																{adjust(); yylval.sval=String(yytext + 1); yylval.ival=atoi(yylval.sval); return ROWID;}
 -{0,1}[0-9]+\/[0-9]+												{adjust(); yylval.sval=String(yytext); return FRACTION;}
 -{0,1}[0-9]+[0-9]*													{adjust(); yylval.ival=atoi(yytext); return INT;}

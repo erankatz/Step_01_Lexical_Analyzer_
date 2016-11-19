@@ -164,14 +164,14 @@ void readMatrix(float **mat)
 	}
 }
 
-float** readOperationFile(char *fname,float **mat)
+float** readOperationFile(char *fname, float **mat)
 {
 	int tok, left_row;
 	int openBar;
-	int i=0;
-	int j=0;
+	int i = 0;
+	int j = 0;
 	float **mat2, **mat3;
-	int right=0;
+	int right = 0;
 	float multiplier = 1;
 	bool row_in_left_apears_on_right = FALSE;
 
@@ -182,15 +182,30 @@ float** readOperationFile(char *fname,float **mat)
 	for (;;)
 	{
 		tok = yylex();
-		if (tok == 0) break;
+		if (tok == 0)
+		{
+			if (mat2 != NULL)
+			{
+				mat3 = MatrixMultiplication(mat2, mat);
+				FreeMatrix(mat2, M);
+				FreeMatrix(mat, M);
+				mat = mat3;
+				if (!row_in_left_apears_on_right)
+				{
+					printf("The row in the left size must apear on the right side");
+					exit(1);
+				}
+			}
+			break;
+		}
 		switch (tok) {
 		case ARROW:
-			printf("arrow");
+			//printf("arrow");
 			right = 1;
 			mat2 = CreateElementaryMatrix(M, N);
 			break;
 		case ROWID:
-			printf("rowid");
+			//printf("rowid");
 			if (yylval.ival <= N)
 			{
 				if (right)
@@ -214,7 +229,7 @@ float** readOperationFile(char *fname,float **mat)
 			}
 			break;
 		case NEWLINE:
-			printf("newline");
+			//printf("\n");
 			if (mat2 != NULL)
 			{
 				mat3 = MatrixMultiplication(mat2, mat);
@@ -233,15 +248,15 @@ float** readOperationFile(char *fname,float **mat)
 			row_in_left_apears_on_right = FALSE;
 			break;
 		case INT:
-			printf("int");
+			//printf("int");
 			multiplier = yylval.ival;
 			break;
 		case FRACTION:
-			printf("fraction");
-			multiplier = FractionToFloat(yylval.sval);
+			printf("1");
+			multiplier = yylval.fval;
 			break;
 		case REPLACEARROW:
-			printf("replacearrow");
+			//printf("replacearrow");
 			replace_rows(mat, left_row);
 			tok = yylex();
 			if (tok != NEWLINE)
@@ -251,7 +266,7 @@ float** readOperationFile(char *fname,float **mat)
 			}
 			break;
 		default:
-			printf("%s ", tokname(tok));
+			//printf("%s ", tokname(tok));
 			break;
 		}
 	}
@@ -270,59 +285,43 @@ int main(int argc, char **argv)
 	int right;
 	float multiplier;
 	bool row_in_left_apears_on_right = FALSE;
-
-	if (argc != 2)
+		
+	if (argc == 3)
 	{
+		fname = argv[1];
+	}
+	else if (argc == 2)
+	{
+
+		mat = RandomizeMatrix(M, N);
+		SaveMatrixToFile(mat, M, N, MATRIXFILE);
+		FreeMatrix(mat, M);
+		fname = MATRIXFILE;
+	} else {
+
 		fprintf(stderr,"usage: a.out filename\n");
 		return 0;
 	}
 	
-	mat = RandomizeMatrix(M, N);
-	SaveMatrixToFile(mat, M, N, MATRIXFILE);
-	FreeMatrix(mat,M);
-	fname = MATRIXFILE ;
 	EM_reset(fname);
 	
 	printf("\n\n") ;
 	
 	mat = CreateMatrix(M, N);
-
+	
 	readMatrix(mat);
-
-	fname = OPERATIONFILE;
-	mat = readOperationFile(fname,mat);
-
-	SaveMatrixToFile(mat, M, N, "out.txt");
-	fname=argv[0];
-	EM_reset(fname);
-
-	for(;;)
+	if (argc == 2)
 	{
-		tok=yylex();
-		if (tok==0) break;
-		switch(tok) {
-		case ID:
-			printf("%s(%s) ",tokname(tok),yylval.sval);
-			break;
-		case STRING:
-			printf("%s(%s) ",tokname(tok),yylval.sval);
-			break;
-		case INT:
-			printf("%s(%d) ",tokname(tok),yylval.ival);
-			break;
-		case FLOAT:
-			printf("%s(%f) ",tokname(tok),yylval.fval);
-			break;
-		case SEMICOLON:
-			printf("%s\n\n",tokname(tok));
-			break;
-		default:
-			printf("%s ",tokname(tok));
-			break;
-		}
+		fname = argv[1];
+	}
+	else {
+		fname = argv[2];
 	}
 
-	printf("\n");
+	mat = readOperationFile(fname,mat);
+	
+	SaveMatrixToFile(mat, M, N, "out.txt");
+	PrintMatrix(mat,M,N);
 	
 	return 0;
 }
