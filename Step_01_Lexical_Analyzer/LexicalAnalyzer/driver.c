@@ -98,38 +98,13 @@ float FractionToFloat(char *str)
 	return ret;
 }
 
-
-int main(int argc, char **argv)
+void readMatrix(float **mat)
 {
-	char* fname;
-	int tok, left_row;
-	int openBar;
-	int i;
-	int j;
-	float **mat;
-	float **mat2, **mat3;
-	int right;
-	float multiplier;
-	
-	if (argc != 2)
-	{
-		fprintf(stderr,"usage: a.out filename\n");
-		return 0;
-	}
-	
-	mat = RandomizeMatrix(M, N);
-	SaveMatrixToFile(mat, M, N, MATRIXFILE);
-	FreeMatrix(mat,M);
-	fname = MATRIXFILE ;
-	EM_reset(fname);
+	int i = 0;
+	int j = 0;
+	int openBar =FALSE;
+	int tok;
 
-	printf("\n\n") ;
-	
-	mat = CreateMatrix(M, N);
-
-	i = 0;
-	j = 0;
-	openBar = 0;
 	//Read Matrix From file
 	for (;;)
 	{
@@ -143,7 +118,7 @@ int main(int argc, char **argv)
 				j++;
 			}
 			else {
-				printf("Syntax Error");
+				printf("Syntax Error: Error reading matrix the matrix should by 3 by 3 size");
 				exit(1);
 			}
 			break;
@@ -154,14 +129,14 @@ int main(int argc, char **argv)
 				j++;
 			}
 			else {
-				printf("Syntax Error");
+				printf("Syntax Error : Error reading matrix the matrix should by 3 by 3 size");
 				exit(1);
 			}
 			break;
 		case LBRACK:
 			if (openBar == TRUE)
 			{
-				printf("Syntax Error");
+				printf("Syntax Error : Missing Barcket");
 				exit(1);
 			}
 			openBar = TRUE;
@@ -171,7 +146,7 @@ int main(int argc, char **argv)
 			if (i == M && j == N)
 				break;
 			else {
-				printf("Syntax Error");
+				printf("Syntax Error : Missing Barcket");
 				exit(1);
 			}
 		case SEMICOLON:
@@ -187,14 +162,23 @@ int main(int argc, char **argv)
 		}
 
 	}
+}
 
-	fname = OPERATIONFILE;
-	right = 0;
-	multiplier = 1;
-	
+float** readOperationFile(char *fname,float **mat)
+{
+	int tok, left_row;
+	int openBar;
+	int i=0;
+	int j=0;
+	float **mat2, **mat3;
+	int right=0;
+	float multiplier = 1;
+	bool row_in_left_apears_on_right = FALSE;
+
 	EM_reset(fname);
 	mat2 = NULL;
 	//Read Operation File
+
 	for (;;)
 	{
 		tok = yylex();
@@ -211,9 +195,14 @@ int main(int argc, char **argv)
 			{
 				if (right)
 				{
-					mat2[left_row-1][yylval.ival-1] = multiplier;
+					mat2[left_row - 1][yylval.ival - 1] = multiplier;
+					if (left_row == yylval.ival)
+					{
+						row_in_left_apears_on_right = TRUE;
+					}
 				}
 				else {
+					
 					left_row = yylval.ival;
 				}
 				multiplier = 1;
@@ -232,10 +221,16 @@ int main(int argc, char **argv)
 				FreeMatrix(mat2, M);
 				FreeMatrix(mat, M);
 				mat = mat3;
+				if (!row_in_left_apears_on_right)
+				{
+					printf("The row in the left size must apear on the right side");
+					exit(1);
+				}
 			}
 			right = 0;
 			multiplier = 1;
 			mat2 = NULL;
+			row_in_left_apears_on_right = FALSE;
 			break;
 		case INT:
 			printf("int");
@@ -247,13 +242,56 @@ int main(int argc, char **argv)
 			break;
 		case REPLACEARROW:
 			printf("replacearrow");
-			replace_rows(mat,left_row);
+			replace_rows(mat, left_row);
+			tok = yylex();
+			if (tok != NEWLINE)
+			{
+				printf("The Syntax of new line is RX <--> RY");
+				exit(1);
+			}
 			break;
 		default:
 			printf("%s ", tokname(tok));
 			break;
 		}
 	}
+	return mat;
+}
+
+int main(int argc, char **argv)
+{
+	char* fname;
+	int tok, left_row;
+	int openBar;
+	int i;
+	int j;
+	float **mat;
+	float **mat2, **mat3;
+	int right;
+	float multiplier;
+	bool row_in_left_apears_on_right = FALSE;
+
+	if (argc != 2)
+	{
+		fprintf(stderr,"usage: a.out filename\n");
+		return 0;
+	}
+	
+	mat = RandomizeMatrix(M, N);
+	SaveMatrixToFile(mat, M, N, MATRIXFILE);
+	FreeMatrix(mat,M);
+	fname = MATRIXFILE ;
+	EM_reset(fname);
+	
+	printf("\n\n") ;
+	
+	mat = CreateMatrix(M, N);
+
+	readMatrix(mat);
+
+	fname = OPERATIONFILE;
+	mat = readOperationFile(fname,mat);
+
 	SaveMatrixToFile(mat, M, N, "out.txt");
 	fname=argv[0];
 	EM_reset(fname);
