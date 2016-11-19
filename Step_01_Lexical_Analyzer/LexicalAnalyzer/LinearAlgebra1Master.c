@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<curses.h>
+
 #include<stdlib.h>
 #include<time.h>
 #ifdef __unix__
